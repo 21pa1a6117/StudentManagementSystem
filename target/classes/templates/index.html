@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a.button:hover {
+            background-color: #218838;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Student List</h1>
+
+<a href="/add" class="button">Add Student</a>
+
+<form action="/search" method="get">
+    <input type="text" name="keyword" placeholder="Search..." />
+    <select name="type">
+        <option value="name">Name</option>
+        <option value="class">Class</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Class</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="student : ${students.content}">
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.age}"></td>
+            <td th:text="${student.studentClass}"></td>
+            <td th:text="${student.email}"></td>
+            <td th:text="${student.address}"></td>
+            <td class="actions">
+                <a th:href="@{'/edit/' + ${student.studentId}}">Edit</a>
+                <a th:href="@{'/delete/' + ${student.studentId}}" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
+            </td>
+        </tr>
+        <tr th:if="${students.totalElements == 0}">
+            <td colspan="6">No students found.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <a th:href="@{/?page=${students.number - 1}}" th:if="${students.hasPrevious()}">Previous</a>
+    <a th:href="@{/?page=${students.number + 1}}" th:if="${students.hasNext()}">Next</a>
+</div>
+
+</body>
+</html>

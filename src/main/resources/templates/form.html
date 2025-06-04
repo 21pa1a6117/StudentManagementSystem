@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add/Edit Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        form {
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Add / Edit Student</h2>
+
+<form th:action="@{/save}" th:object="${student}" method="post">
+    <!-- CSRF Token for Spring Security -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <input type="hidden" th:field="*{studentId}" />
+
+    <label>Name:
+        <input type="text" th:field="*{name}" />
+        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    </label>
+
+    <label>Age:
+        <input type="number" th:field="*{age}" />
+        <span class="error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+    </label>
+
+    <label>Class:
+        <input type="text" th:field="*{studentClass}" />
+        <span class="error" th:if="${#fields.hasErrors('studentClass')}" th:errors="*{studentClass}"></span>
+    </label>
+
+    <label>Email:
+        <input type="email" th:field="*{email}" />
+        <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </label>
+
+    <label>Address:
+        <input type="text" th:field="*{address}" />
+        <span class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+    </label>
+
+    <button type="submit">Save</button>
+</form>
+
+<!-- Global error display -->
+<div th:if="${#fields.hasErrors('*')}">
+    <p class="error" th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+</div>
+
+</body>
+</html>
